@@ -1,9 +1,9 @@
 ---
 title: "Linear regression: Abalone growth and pH example"
-author: "your name here"
-date: "insert date here"
+author: Megan Zhao
+date: 5/15/2026
 format:
-  html:
+  pdf:
     toc: true # use this to display a table of contents
 execute:
   message: false # use this to make sure messages don't show up
@@ -23,6 +23,8 @@ library(ggeffects) # generating model predictions
 library(flextable) # creating tables
 
 # abalone data from Hamilton et al. 2022
+# read in data from excel (HOLY PEAK)
+# pull 'Abalone IMTA_growth and pH.xlsx' from 'data' file using 'here' function
 abalone <- read_xlsx(here("data", "Abalone IMTA_growth and pH.xlsx"))
 ```
 
@@ -32,26 +34,27 @@ Data from Hamilton et al. 2022. "Integrated multi-trophic aquaculture mitigates 
 
 ## a. Questions and hypotheses
 
-Question: How does pH predict abalone growth (measured in change in shell surface area per day, mm^-2^ d^-1^)?  
+Question: How does pH predict abalone growth (measured in change in shell surface area per day, mm^2^ d^-1^)?  
 
-H~0~: **[fill in here]**  
+H~0~: there is no effect of pH on abalone growth (don't put significance in hypothesis, just for common phrasing)  
 
-H~A~: **[fill in here]**
+H~A~: there is an effect of pH on abalone growth
 
 ## b. Cleaning
 
 ```{r}
 #| label: abalone-data-cleaning
 
-# 
-abalone_clean <- abalone  
-  # 
-  clean_names()  
-  # 
-  select(mean_p_h, change_in_area_mm2_d_1_25)  
-  # 
+# create new object from 'abalone' data set
+abalone_clean <- abalone |>   
+  # clean column names
+  clean_names() |>   
+  # select columns of interest
+  select(mean_p_h, change_in_area_mm2_d_1_25) |>   
+  # rename columns for clarity
   rename(mean_ph = mean_p_h, 
          change_in_area = change_in_area_mm2_d_1_25)
+
 ```
 
 Don't forget to look at your data! Use `View(abalone_clean)` in the _Console_.
@@ -61,20 +64,21 @@ Don't forget to look at your data! Use `View(abalone_clean)` in the _Console_.
 ```{r}
 #| label: abalone-scatterplot
 
-# 
-ggplot(data = abalone_clean, # 
-       aes(x = mean_ph, # 
-           y = change_in_area)) 
-  # 
+# base layer: ggplot
+ggplot(data = abalone_clean, # starting data frame
+       aes(x = mean_ph, # x-axis: pH, y-axis: shell surface area change
+           y = change_in_area)) +
+  # first layer: geom point to represent individual observations
   geom_point(size = 4,
              stroke = 1,
-             fill = "firebrick4",
+             fill = "firebrick4", 
              shape = 21)
+
 ```
 
 Where does the missing value come from?  
 
-**insert response here**  
+**The missing value comes from a pair of tanks in which the pH sensor malfunctioned, so there is no pH reading from those tanks.**  
 
 Don't forget to turn your warnings off either in the individual code chunk or in the YAML at the top of the file.
 
@@ -85,18 +89,21 @@ Don't forget to turn your warnings off either in the individual code chunk or in
 ```{r}
 #| label: abalone-model
 
+# create linear object called abalone_model object
 abalone_model <- lm(
-  change_in_area ~ mean_ph, # 
-  data = abalone_clean      # 
+  change_in_area ~ mean_ph, # formula: change in shell SA as a function of pH
+  data = abalone_clean      # data frame: clean abalone data
 )
+
 ```
 
 ### Diagnostics
 
 ```{r abalone-model-diagnostics}
 
-par(mfrow = c(2, 2))   # 
-plot(abalone_model)    # 
+# create diagnostic plots
+par(mfrow = c(2, 2))   # displays plots in a 2x2 grid 
+plot(abalone_model)    # display diagnostic plots 
 
 ```
 
@@ -112,11 +119,11 @@ summary(abalone_model)
 
 What is the slope estimate (with standard error?)  
 
-**insert your response here**  
+$\beta_1$ = 2.98 $\pm$ 0.76 
 
 What is the intercept estimate (with standard error?)  
 
-**insert your response here**
+$\beta_0$ = -18.5010 $\pm$ 6.16
 
 ### Generating predictions
 
@@ -131,13 +138,14 @@ abalone_preds <- ggpredict(
 
 # display the predictions
 abalone_preds
+
 ```
 
 Look at the column names using `colnames(abalone_preds)` in the Console.  
 
 What are the column names?  
 
-**insert your notes here**  
+'x', 'predicted', 'std.error', 'conf.low', 'conf.high', 'group' (not going to worry about 'group' column for now)
 
 Look at the actual object (by clicking on it in Environment).  
 
@@ -145,7 +153,7 @@ Look at the class of the object using `class(abalone_preds)` in the Console.
 
 What is this type of object?  
 
-**insert your notes here**  
+This is a ggeffects object but it is also a data frame  
 
 View `abalone_preds` like a data frame. 
 
@@ -165,11 +173,12 @@ ggpredict(
   abalone_model,      # model object
   terms = "mean_ph[8]"   # predictor (in quotation marks) and predictor value in brackets
 )
+
 ```
 
 How would you interpret this?  
 
-**insert your response here**
+At pH = 8, the model predicts abalone shell growth of 5.36 (95% CI: 5.08, 5.64) mm^2^
 
 ### Visualizing model predictions and data
 
@@ -204,6 +213,7 @@ ggplot(data = abalone_clean,
        y = expression("Change in shell area ("*mm^{2}~d^-1*")")) +
   # theme
   theme_minimal()
+
 ```
 
 ### Creating a table with model coefficients, 95% confidence intervals, and more
@@ -214,6 +224,7 @@ ggplot(data = abalone_clean,
 #| label: abalone-table
 
 as_flextable(abalone_model)
+
 ```
 
 **END OF ABALONE EXAMPLE**
