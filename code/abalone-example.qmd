@@ -145,7 +145,7 @@ Look at the column names using `colnames(abalone_preds)` in the Console.
 
 What are the column names?  
 
-'x', 'predicted', 'std.error', 'conf.low', 'conf.high', 'group' (not going to worry about 'group' column for now)
+`x`, `predicted`, `std.error`, `conf.low`, `conf.high`, `group` (not going to worry about `group` column for now)
 
 Look at the actual object (by clicking on it in Environment).  
 
