@@ -1,7 +1,7 @@
 ---
 title: "Linear regression: Sonadora temperature and elevation example"
-author: "your name here"
-date: "insert date here"
+author: Megan Zhao
+date: 05/15/2026
 format:
   html:
     toc: true # use this to display a table of contents
@@ -33,9 +33,9 @@ Data from Ramirez, A. 2024. Sonadora elevational plots: long-term monitoring of 
 
 Question: Does elevation (in meters) predict temperature (in °C)?
 
-H~0~: Elevation (m) does not predict temperature (°C).
+H~0~: There is an effect of elevation (m) on temperature (°C).
 
-H~A~: Elevation (m) predicts temperature (°C).
+H~A~: There is no effect of elevation (m) temperature (°C).
 
 ## b. Cleaning and summarizing
 
