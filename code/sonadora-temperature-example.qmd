@@ -3,7 +3,7 @@ title: "Linear regression: Sonadora temperature and elevation example"
 author: Megan Zhao
 date: 05/15/2026
 format:
-  html:
+  pdf:
     toc: true # use this to display a table of contents
 execute:
   message: false # use this to make sure messages don't show up
@@ -70,6 +70,7 @@ sonadora_sum <- sonadora_clean |>
   ungroup() |> 
   # arrange in order of elevation
   arrange(elevation_m)
+
 ```
 
 ## c. Exploratory data visualization
@@ -78,7 +79,7 @@ sonadora_sum <- sonadora_clean |>
 #| label: temperature-visualization
 
 # base layer: ggplot
-ggplot(data = sonadora_sum, 
+ggplot(data = sonadora_sum, # use 
        aes(x = elevation_m,
            y = mean_temp_c)) +
   # first layer: points representing temperature at each elevation
@@ -105,8 +106,8 @@ temperature_model <- lm(
 #| label: temperature-diagnostics
 
 # diagnostics
-par(mfrow = c(2, 2))
-plot(temperature_model)
+par(mfrow = c(2, 2)) # display plots in 2x2 grid
+plot(temperature_model) # display diagnostic plots
 
 ```
 
@@ -115,6 +116,7 @@ plot(temperature_model)
 ```{r}
 #| label: temperature-model-summary
 
+# more model information
 summary(temperature_model)
 
 ```
@@ -137,6 +139,7 @@ ggpredict(
   temperature_model,           # model object
   terms = "elevation_m[900]"   # predictor (in quotation marks) and predictor value in brackets
 )
+
 ```
 
 **At 900 m, the predicted temperature is 19.8 °C (95% CI: [19.6, 20.0]).**
@@ -177,6 +180,7 @@ ggplot(data = sonadora_sum,
 #| label: temperature-model-table
 
 as_flextable(temperature_model)
+
 ```
 
 **END OF SONADORA EXAMPLE**
