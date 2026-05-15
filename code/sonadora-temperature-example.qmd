@@ -172,6 +172,7 @@ ggplot(data = sonadora_sum,
   labs(x = "Elevation (m)",
        y = "Mean temperature (\U00B0 C)") +
   theme_bw()
+
 ```
 
 ### Creating a table with model coefficients, 95% confidence intervals, and more
